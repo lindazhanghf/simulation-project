@@ -16,10 +16,10 @@ $(document).ready(function() {
 
   var state_begin = new State("Begin",
     null,
-    () => changeToState(state_breakfast)
+    () => changeToState(state_week)
   );
 
-  var state_breakfast = new State("game",
+  var state_week = new State("game",
     function () {
       timestep++
       console.log("New timestep: " + timestep)
@@ -27,14 +27,82 @@ $(document).ready(function() {
       display_state(curr_state);
     },
     function () {
+      normalize_params();
+
       curr_state++;
-      display_state(curr_state);
-      // changeToState(state_school)
+      if (curr_state >= 5) {
+        changeToState(state_end_week);
+        curr_state = 0;
+      } else {
+        display_state(curr_state);
+      }
+    },
+    function () {
+      normalize_params();
+    }
+  );
+
+  var state_end_week = new State("end_week",
+    function () {
+      clear_all()
+      update_params()
+      let message = "";
+      message += "You finished the first week with a " + grade + ". ";
+      message += grade>=85?"Great job!" : (grade>=70? "Not bad!":"Work harder next time!");
+      message += "<br/><br/>You parents were ";
+      if (parent_satisfaction > 90)
+        message += "very satisfied with you. They believed that you can achieve in anything you like.";
+      else if (parent_satisfaction > 70)
+        message += "satisfied with your performance. Now they are more willing to let you pursue your interests.";
+      else
+        message += "not happy about your performance. They are still restricting certain activities."
+
+      message += "<br/><br/>";
+      if (social_connection < 5)
+        message += "You spent the whole time studying too hard and missing out on social life. Your well being is at risk!";
+      else if (social_connection < 30)
+        message += "You social connection remained low. This makes you a bit depressed and could hurt your performance in <i>Gaokao</i>.";
+      else
+        message += "You are enjoying your social life. Feeling optimistic about <i>Gaokao</i>!"
+
+      draw_message(message);
+      draw_continue_button();
+    },
+    function () {
+      if (timestep < 3)
+        changeToState(state_week);
+      else
+        changeToState(state_ending);
     },
     null
   );
 
-  var state_ending = new State("Ending");
+  var state_ending = new State("ending",
+  function() {
+      clear_all();
+      update_params();
+      draw("#week", "<b>Week of <i>Gaokao</i></b>");
+      let message = "It's the big day.<br/><br/>";
+      message += "You got " + grade + " in your Gaokao. ";
+      message += grade>=85?"Great job!" : (grade>=70? "Not bad!":"Work harder next time!");
+      message += "<br/><br/>You parents were ";
+      if (parent_satisfaction > 90)
+        message += "very satisfied with you. They believed that you can achieve in anything you like.";
+      else if (parent_satisfaction > 70)
+        message += "satisfied with your performance. Now they are more willing to let you pursue your interests.";
+      else
+        message += "not happy about your performance. They are still restricting certain activities."
+
+      message += "<br/><br/>";
+      if (social_connection < 5)
+        message += "You spent the whole time studying too hard and missing out on social life. Your well being is at risk!";
+      else if (social_connection < 30)
+        message += "You social connection remained low. This makes you a bit depressed and could hurt your performance in <i>Gaokao</i>.";
+      else
+        message += "You are enjoying your social life. Feeling optimistic about <i>Gaokao</i>!"
+
+      draw_message(message);
+  });
 
   machine = new StateMachine(state_begin); // To start the StateMachine, just create a new state object and pass it the initial state, like so
   $("#bttn").click(function() {
@@ -42,10 +110,24 @@ $(document).ready(function() {
   });
 });
 
+function normalize_params() {
+  grade = normalize(grade);
+  parent_satisfaction = normalize(parent_satisfaction);
+  social_connection = normalize(social_connection);
+}
+
+function normalize(param) {
+  if (param < 0)
+    return 0;
+  else if (param > 100)
+    return 100;
+  return param;
+}
+
 function display_state(state_index) {
   clear_all()
   update_params()
-  draw_message(game[state_index].scripts[timestep-1])
+  draw_message(game[state_index].scripts[0], curr_result)
   Object.keys(game[state_index].options).forEach((key)=>{
     draw_option(key, game[state_index].options[key]);
   })
@@ -71,7 +153,7 @@ function select_option(id) {
 
 // Draw /////////////
 ///////////////////////////////////////////////
-param_list = ["#output", "#buttons", "#grade", "#parent", "#social"]
+param_list = ["#output", "#buttons", "#week", "#grade", "#parent", "#social"]
 function clear_all() {
   param_list.forEach((id) => {
     return ClearByID(id);
@@ -79,6 +161,7 @@ function clear_all() {
 }
 
 function update_params() {
+  draw("#week", "<b>Week "+timestep+"</b>");
   draw("#grade", grade);
   draw_progress("#parent", parent_satisfaction);
   draw_progress("#social", social_connection);
@@ -92,9 +175,9 @@ function draw(id, input) {
   $(id).append(input);
 }
 
-function draw_message(msg) {
+function draw_message(msg, result) {
   $("#output").append(
-    "<p>" + curr_result + msg + "</p>"
+    "<p>" + (result?result:"") + msg + "</p>"
   );
 }
 
@@ -118,7 +201,7 @@ function draw_option(id, option) {
   if (option.tooltip) {
     output += `<span class="tooltiptext">`;
     if (option.require && parent_satisfaction < option.require) {
-      output += `<div style="color:red">Requires</div>` + tooltip_icon("parent", 0) + " > " + option.require + "%";
+      output += `<span style="color:red">Requires</span><br/>` + tooltip_icon("parent", 0) + "> " + option.require + "%";
     } else {
       Object.keys(option.tooltip).forEach((key) => {
         output += tooltip_icon(key, option.tooltip[key]);
@@ -143,6 +226,19 @@ function tooltip_icon(id, value) {
     for (var i = 0; i > value; i--) {
       return_str += " -";
     }
-  }
+  } else if (id == "grade")
+    return_str += " ?";
   return return_str + "</b><br/>";
+}
+
+function draw_continue_button() {
+  $("#buttons").append(`
+        <div class="col-md-2">
+            <button id="bttn" type="button" class="tool_tip btn btn-primary">Continue
+            </button>
+        </div>
+    `);
+  $("#bttn").click(function() {
+    machine.update();
+  });
 }

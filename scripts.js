@@ -36,9 +36,9 @@ var game = [
       "scripts" : [`School had started! What should you do between classes?`],
       "options" : {
         "opt1" : {
-          "text":"",
+          "text":"Make the best use of your time in school",
           "image_path":"assets/school_homework.jpg",
-          "button_text":"Do homework",
+          "button_text":"Study hard",
           "tooltip" : {
             "grade" : 2,
             "parent" : 2,
@@ -52,9 +52,9 @@ var game = [
           "result" : "It was not easy but you eventually pulled it through.<br/><br/>"
         },
         "opt2" : {
-          "text":"",
+          "text":"Chat with your classmates",
           "image_path":"assets/school_chat.jpg",
-          "button_text":"Chat with classmates",
+          "button_text":"Take it easy",
           "tooltip" : {
             "social" : 2
             // "grade" : -1,
@@ -75,21 +75,21 @@ var game = [
       "options" : {
         "opt1" : {
           "text":"",
-          // "image_path":"assets/school_homework.jpg",
+          "image_path":"assets/after_homework.jpg",
           "button_text":"Do homework",
           "tooltip" : {
             "grade" : 2,
             "parent" : 2
           },
           "affect" : {
-            "grade" : 4,
+            "grade" : 3,
             "parent" : 8
           },
-          "result" : "It was not easy but you eventually pulled it through.<br/><br/>"
+          "result" : "It's good to catch up with some homework while teachers are still around.<br/><br/>"
         },
         "opt2" : {
           "text":"",
-          // "image_path":"assets/school_chat.jpg",
+          "image_path":"assets/after_club_academic.jpg",
           "button_text":"Participate in academic clubs",
           "tooltip" : {
             "grade" : 1,
@@ -106,7 +106,7 @@ var game = [
         "opt3" : {
           "require" : 50,
           "text":"",
-          // "image_path":"assets/school_chat.jpg",
+          "image_path":"assets/after_club_fun.jpg",
           "button_text":"Participate in fun clubs!",
           "tooltip" : {
             "social" : 3,
@@ -119,6 +119,108 @@ var game = [
             // "parent" : -4
           },
           "result" : "You enjoyed your time in the school clubs!<br/><br/>"
+        }
+      }
+    },
+    {
+      "name" : "evening",
+      "scripts" : [`You got home pretty late and you are tired. Whats your plan for the evening?`],
+      "options" : {
+        "opt1" : {
+          "text":"Steady improvement",
+          "image_path":"assets/homework.jpg",
+          "button_text":"Do homework",
+          "tooltip" : {
+            "grade" : 2,
+            "parent" : 2
+          },
+          "affect" : {
+            "grade" : 5,
+            "parent" : 8
+          },
+          "result" : "You have finished all the homework assigned by your teachers.<br/><br/>"
+        },
+        "opt2" : {
+          "text":"It could boost your grade<br/>if your parents picked the right one",
+          "image_path":"assets/home_additional.jpg",
+          "button_text":"Work on additional exercises",
+          "tooltip" : {
+            "grade" : 0,
+            "parent" : 3,
+          },
+          "affect" : {
+            "grade" : 5,
+            "parent" : 15,
+          },
+          "result" : ""
+        },
+        "opt3" : {
+          "require" : 80,
+          "text":"Great conversation topic with peers",
+          "image_path":"assets/home_tv.jpg",
+          "button_text":"Watch TV",
+          "tooltip" : {
+            "social" : 2,
+            // "grade" : 1,
+            "parent" : -2
+          },
+          "affect" : {
+            "social" : 8,
+            // "grade" : -2,
+            "parent" : -6
+          },
+          "result" : "Now you can catch up with your classmates on the latest Game of Throne series!<br/><br/>"
+        }
+      }
+    },
+    {
+      "name" : "weekend",
+      "scripts" : [`You made it through the week!!<br/><br/>What are you plans for the weekend?`],
+      "options" : {
+        "opt1" : {
+          "text":"Stressful but worthwhile",
+          "image_path":"assets/weekend_tutor.jpg",
+          "button_text":"Go to tutor/classes",
+          "tooltip" : {
+            "grade" : 2,
+            "parent" : 3
+          },
+          "affect" : {
+            "grade" : 6,
+            "parent" : 12
+          },
+          "result" : "It's a new week again! You are stressed out from classes yesterday.<br/><br/>"
+        },
+        "opt2" : {
+          "text":"Not very effecient but you get to social",
+          "image_path":"assets/weekend_study_friends.jpg",
+          "button_text":"Study with friends",
+          "tooltip" : {
+            "grade" : 1,
+            "social" : 2,
+          },
+          "affect" : {
+            "grade" : 5,
+            "social" : 8,
+          },
+          "result" : "It's a new week again! You are tired because of staying up late to finish homework, as you were busy chatting with your friends.<br/><br/>"
+        },
+        "opt3" : {
+          "require" : 60,
+          "text":"Shopping, karaoke, ComicCon...",
+          "image_path":"assets/weekend_friends.jpg",
+          "button_text":"Hang out with friends",
+          "tooltip" : {
+            // "grade" : 1,
+            "parent" : -1,
+            "social" : 3,
+          },
+          "affect" : {
+            // "grade" : -2,
+            "parent" : -3,
+            "social" : 15,
+          },
+          "result" : "You had a great time with your friends.<br/><br/>"
         }
       }
     },
