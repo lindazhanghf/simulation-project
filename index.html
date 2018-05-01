@@ -12,6 +12,30 @@
     .card {
       margin-left: 1em;
     }
+
+    .tool_tip {
+      position: relative;
+      display: inline-block;
+      border-bottom: 1px dotted black;
+    }
+
+    .tool_tip .tooltiptext {
+      visibility: hidden;
+      width: 120px;
+      background-color: lightblue;
+      color: #000000;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+
+      /* Position the tooltip */
+      position: absolute;
+      z-index: 1;
+    }
+
+    .tool_tip:hover .tooltiptext {
+      visibility: visible;
+    }
   </style>
   <body>
     <nav class="navbar navbar-light bg-light">
@@ -67,15 +91,18 @@
         <div class="col">
         </div>
         <div class="col-md-2">
+            <button id="bttn" type="button" class="tool_tip btn btn-primary">Start Playing
+            </button>
         </div>
-        <div class="card text-center" style="width: 18rem;">
+<!--         <div class="card text-center" style="width: 18rem;">
           <img class="card-img-top" src="assets/morning_reading.jpg" alt="Morning Reading Photo">
           <div class="card-body">
             <p class="card-text">Morning Reading</p>
-            <button id="bttn" type="button" class="btn btn-primary" style="justify-content::center">Start Playing</button>
+            <button id="bttn" type="button" class="tool_tip btn btn-primary" style="justify-content::center">Start Playing
+            </button>
           </div>
         </div>
-
+ -->
         <div class="col">
         </div>
       </div>

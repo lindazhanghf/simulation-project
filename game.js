@@ -5,27 +5,10 @@ var grade = 50;
 var parent_satisfaction = 0;
 var social_connection = 0;
 
-var breakfast = {
-  "scripts" : [`It's a new day! You are stressed out from homework yesterday night. <br/><br/>What should you do?`],
-  "options" : [
-    {
-      "id":"opt_early",
-      "text":"Participate in the Morning Reading",
-      "image_path":"assets/morning_reading.jpg",
-      "button_text":"Go to school early"
-    },
-    {
-      "id":"opt_late",
-      "text":"Skip the Morning Reading",
-      "image_path":"assets/sleep.jpg",
-      "button_text":"Sleep for longer"
-    }
-  ]
-}
-
 $(document).ready(function() {
   // Config
   var selected_id = NaN;
+  var curr_state = 0;
   var changeToState = function (state) {
     machine.change(state);
   }
@@ -39,15 +22,12 @@ $(document).ready(function() {
     function () {
       timestep++
       console.log("New timestep: " + timestep)
-      clear_all()
-      update_params()
-      draw_message(breakfast.scripts[0])
-      breakfast.options.forEach((opt)=>{
-        console.log("option: "+opt.button_text)
-        draw_option(opt);
-      })
+
+      display_state(curr_state);
     },
     function () {
+      curr_state++;
+      display_state(curr_state);
       // changeToState(state_school)
     },
     null
@@ -55,28 +35,26 @@ $(document).ready(function() {
 
   var state_ending = new State("Ending");
 
-
-
   machine = new StateMachine(state_begin); // To start the StateMachine, just create a new state object and pass it the initial state, like so
   $("#bttn").click(function() {
     machine.update();
   });
 });
 
+function display_state(state_index) {
+  clear_all()
+  update_params()
+  draw_message(game[state_index].scripts[timestep-1])
+  game[state_index].options.forEach((opt)=>{
+    console.log("option: "+opt.button_text)
+    draw_option(opt);
+  })
+}
+
 function select_option(id) {
   console.log("Selected "+id);
   selected_id = id;
   machine.update();
-}
-
-function display_state(id) {
-  clear_all()
-  update_params()
-  draw_message(game[id].scripts[timestep-1])
-  game[id].options.forEach((opt)=>{
-    console.log("option: "+opt.button_text)
-    draw_option(opt);
-  })
 }
 
 // Draw /////////////
@@ -126,10 +104,35 @@ function draw_option(option) {
   output += `
       <div class="card-body">
         <p class="card-text">`+option.text+`</p>
-        <button id="`+option.id+`" type="button" class="btn btn-primary" onClick="select_option(this.id)">`+option.button_text+`</button>
+        <button id="`+option.id+`" type="button" class="tool_tip btn btn-primary" onClick="select_option(this.id)">`+option.button_text;
+
+  if (option.tooltip) {
+    output += `<span class="tooltiptext">`;
+    Object.keys(option.tooltip).forEach((key) => {
+      output += tooltip_icon(key, option.tooltip[key]);
+    })
+
+    output += `</span>`;
+  }
+
+  output += `</button>
       </div>
     </div>`;
 
 
   $("#buttons").append(output);
+}
+
+function tooltip_icon(id, value) {
+  let return_str = `<img src="assets/icons/`+id+`.png" width="35" height="35" class="d-inline-block align-top">`;
+  if (value > 0) {
+    for (var i = 0; i < value; i++) {
+      return_str += "+";
+    }
+  } else {
+    for (var i = 0; i > value; i--) {
+      return_str += "-";
+    }
+  }
+  return return_str + "<br/>";
 }
