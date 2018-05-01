@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Game Engine</title>
+    <meta name="description" content="6313 GATech class example">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  </head>
+  <style>
+    .card {
+      margin-left: 1em;
+    }
+  </style>
+  <body>
+    <nav class="navbar navbar-light bg-light">
+      <a class="navbar-brand"">
+        <!-- <img src="/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt=""> -->
+        <b>Chinese Parents</b>
+        a parent simulation game
+      </a>
+    </nav>
+    <div class="container">
+      <h3 id="week"><b>Week 1</b></h3>
+      <div class="row">
+        <div class="col-1">
+          <img style="float:right" src="assets/icons/grade.png" width="50" height="50" class="d-inline-block align-top" alt="Grade Icon">
+        </div>
+        <div class="col-2">
+          Your Grade <br/>
+          <b id="grade">50</b> / 100
+        </div>
+        <div class="col-1">
+          <img style="float:right" src="assets/icons/parent.png" width="50" height="50" class="d-inline-block align-top" alt="Parent's Satisfaction Icon">
+        </div>
+        <div class="col-3">
+          Parents' Satisfaction
+          <div class="progress" id="parent">
+            <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+        <div class="col-1">
+        </div>
+        <div class="col-1">
+          <img style="float:right" src="assets/icons/social.png" width="50" height="50" class="d-inline-block align-top" alt="Social Connection Icon">
+        </div>
+        <div class="col-3">
+          Social Connection
+          <div class="progress" id="social">
+            <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+      <div id="output" style="margin:2em;font-size:1.2rem">
+        <p>
+          Welcome to your last semester in high school. This semester is all about the College Entrance Exam. <br/><br/>
+
+          The goal is to maintain a good grade. But don't forget, social connection is also very important for your well being!
+        </p>
+
+      </div>
+      <div id="buttons" class="row justify-content-md-center">
+        <div class="col">
+        </div>
+        <div class="col-md-2">
+        </div>
+        <div class="card text-center" style="width: 18rem;">
+          <img class="card-img-top" src="assets/morning_reading.jpg" alt="Morning Reading Photo">
+          <div class="card-body">
+            <p class="card-text">Morning Reading</p>
+            <button id="bttn" type="button" class="btn btn-primary" style="justify-content::center">Start Playing</button>
+          </div>
+        </div>
+
+        <div class="col">
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="engine.js"></script>
+  <script src="scripts.js"></script>
+  <script src="game.js"></script>
+</html>
