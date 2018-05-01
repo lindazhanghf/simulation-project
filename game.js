@@ -3,8 +3,10 @@ var machine = null;
 var curr_state = 0;
 var timestep = 0;
 var grade = 50;
-var parent_satisfaction = 0;
+var parent_satisfaction = 10;
 var social_connection = 0;
+
+var curr_result = "";
 
 $(document).ready(function() {
   // Config
@@ -51,16 +53,19 @@ function display_state(state_index) {
 
 function select_option(id) {
   console.log("Selected "+id);
-  let result = game[curr_state].options[id].result;
-  Object.keys(result).forEach((key) => {
+  curr_result = "";
+  let affects = game[curr_state].options[id].affect;
+  Object.keys(affects).forEach((key) => {
     if (key == "grade")
-      grade += result[key];
+      grade += affects[key];
     else if (key == "parent")
-      parent_satisfaction += result[key];
+      parent_satisfaction += affects[key];
     else if (key == "social")
-      social_connection += result[key];
-    console.log(key + " => " + result[key]);
+      social_connection += affects[key];
+    console.log(key + " => " + affects[key]);
   });
+  if (game[curr_state].options[id].result)
+    curr_result = game[curr_state].options[id].result;
   machine.update();
 }
 
@@ -89,7 +94,7 @@ function draw(id, input) {
 
 function draw_message(msg) {
   $("#output").append(
-    "<p>" + msg + "</p>"
+    "<p>" + curr_result + msg + "</p>"
   );
 }
 
@@ -100,7 +105,7 @@ function draw_progress(id, value) {
 }
 
 function draw_option(id, option) {
-  console.log("Draw option: "+option.button_text)
+  console.log("Draw option: "+option.button_text);
   var output = `<div class="card text-center" style="height: 20rem;">`
   if (option.image_path) {
     output += `<img class="card-img-top" src="`+option.image_path+`" alt="Morning Reading Photo" style="height: 12rem;">`;
@@ -108,13 +113,17 @@ function draw_option(id, option) {
   output += `
       <div class="card-body">
         <p class="card-text">`+option.text+`</p>
-        <button id="`+id+`" type="button" class="tool_tip btn btn-primary" onClick="select_option(this.id)">`+option.button_text;
+        <button ` + (option.require&&(parent_satisfaction<option.require) ? `disabled`:``) + ` id="`+id+`" type="button" class="tool_tip btn btn-primary" onClick="select_option(this.id)">`+option.button_text;
 
   if (option.tooltip) {
     output += `<span class="tooltiptext">`;
-    Object.keys(option.tooltip).forEach((key) => {
-      output += tooltip_icon(key, option.tooltip[key]);
-    })
+    if (option.require && parent_satisfaction < option.require) {
+      output += `<div style="color:red">Requires</div>` + tooltip_icon("parent", 0) + " > " + option.require + "%";
+    } else {
+      Object.keys(option.tooltip).forEach((key) => {
+        output += tooltip_icon(key, option.tooltip[key]);
+      })
+    }
     output += `</span>`;
   }
   output += `</button>
@@ -125,15 +134,15 @@ function draw_option(id, option) {
 }
 
 function tooltip_icon(id, value) {
-  let return_str = `<img src="assets/icons/`+id+`.png" width="35" height="35" class="d-inline-block align-top">`;
+  let return_str = `<img src="assets/icons/`+id+`.png" width="35" height="35" class="d-inline-block align-top"><b>`;
   if (value > 0) {
     for (var i = 0; i < value; i++) {
-      return_str += "+";
+      return_str += " +";
     }
-  } else {
+  } else if (value < 0) {
     for (var i = 0; i > value; i--) {
-      return_str += "-";
+      return_str += " -";
     }
   }
-  return return_str + "<br/>";
+  return return_str + "</b><br/>";
 }
