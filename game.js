@@ -1,5 +1,6 @@
 // Simulation Variables
 var machine = null;
+var curr_state = 0;
 var timestep = 0;
 var grade = 50;
 var parent_satisfaction = 0;
@@ -7,8 +8,6 @@ var social_connection = 0;
 
 $(document).ready(function() {
   // Config
-  var selected_id = NaN;
-  var curr_state = 0;
   var changeToState = function (state) {
     machine.change(state);
   }
@@ -45,15 +44,23 @@ function display_state(state_index) {
   clear_all()
   update_params()
   draw_message(game[state_index].scripts[timestep-1])
-  game[state_index].options.forEach((opt)=>{
-    console.log("option: "+opt.button_text)
-    draw_option(opt);
+  Object.keys(game[state_index].options).forEach((key)=>{
+    draw_option(key, game[state_index].options[key]);
   })
 }
 
 function select_option(id) {
   console.log("Selected "+id);
-  selected_id = id;
+  let result = game[curr_state].options[id].result;
+  Object.keys(result).forEach((key) => {
+    if (key == "grade")
+      grade += result[key];
+    else if (key == "parent")
+      parent_satisfaction += result[key];
+    else if (key == "social")
+      social_connection += result[key];
+    console.log(key + " => " + result[key]);
+  });
   machine.update();
 }
 
@@ -61,16 +68,12 @@ function select_option(id) {
 ///////////////////////////////////////////////
 param_list = ["#output", "#buttons", "#grade", "#parent", "#social"]
 function clear_all() {
-  // ClearByID("#output");
   param_list.forEach((id) => {
     return ClearByID(id);
   });
 }
 
 function update_params() {
-  // param_list.forEach(function(id) {
-  //   return ClearByID(id);
-  // })
   draw("#grade", grade);
   draw_progress("#parent", parent_satisfaction);
   draw_progress("#social", social_connection);
@@ -96,7 +99,8 @@ function draw_progress(id, value) {
   );
 }
 
-function draw_option(option) {
+function draw_option(id, option) {
+  console.log("Draw option: "+option.button_text)
   var output = `<div class="card text-center" style="height: 20rem;">`
   if (option.image_path) {
     output += `<img class="card-img-top" src="`+option.image_path+`" alt="Morning Reading Photo" style="height: 12rem;">`;
@@ -104,21 +108,18 @@ function draw_option(option) {
   output += `
       <div class="card-body">
         <p class="card-text">`+option.text+`</p>
-        <button id="`+option.id+`" type="button" class="tool_tip btn btn-primary" onClick="select_option(this.id)">`+option.button_text;
+        <button id="`+id+`" type="button" class="tool_tip btn btn-primary" onClick="select_option(this.id)">`+option.button_text;
 
   if (option.tooltip) {
     output += `<span class="tooltiptext">`;
     Object.keys(option.tooltip).forEach((key) => {
       output += tooltip_icon(key, option.tooltip[key]);
     })
-
     output += `</span>`;
   }
-
   output += `</button>
       </div>
     </div>`;
-
 
   $("#buttons").append(output);
 }
