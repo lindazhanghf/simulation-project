@@ -1,7 +1,7 @@
 var game = [
     {
       "name" : "breakfast",
-      "scripts" : [`It's a new day! You are stressed out from homework yesterday night. <br/><br/>What should you do?`],
+      "scripts" : [`What should you do?`],
       "options" : {
         "opt_early" : {
           "text":"Participate in the Morning Reading",
@@ -135,7 +135,7 @@ var game = [
             "parent" : 2
           },
           "affect" : {
-            "grade" : 5,
+            "grade" : 4,
             "parent" : 8
           },
           "result" : "You have finished all the homework assigned by your teachers.<br/><br/>"
@@ -186,13 +186,13 @@ var game = [
             "parent" : 3
           },
           "affect" : {
-            "grade" : 6,
+            "grade" : 5,
             "parent" : 12
           },
           "result" : "It's a new week again! You are stressed out from classes yesterday.<br/><br/>"
         },
         "opt2" : {
-          "text":"Not very effecient but you get to social",
+          "text":"Not very effecient but you get to socialize",
           "image_path":"assets/weekend_study_friends.jpg",
           "button_text":"Study with friends",
           "tooltip" : {
@@ -200,10 +200,10 @@ var game = [
             "social" : 2,
           },
           "affect" : {
-            "grade" : 5,
+            "grade" : 2,
             "social" : 8,
           },
-          "result" : "It's a new week again! You are tired because of staying up late to finish homework, as you were busy chatting with your friends.<br/><br/>"
+          "result" : "It's a new week again! You are tired because of staying up late to finish homework, as you were busy chatting with your friends during weekend.<br/><br/>"
         },
         "opt3" : {
           "require" : 60,
@@ -220,7 +220,7 @@ var game = [
             "parent" : -3,
             "social" : 15,
           },
-          "result" : "You had a great time with your friends.<br/><br/>"
+          "result" : "You had a great time with your friends. You felt energized for the following week!<br/><br/> It's a new week again! <br/><br/>"
         }
       }
     },

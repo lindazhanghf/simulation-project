@@ -6,7 +6,7 @@ var grade = 50;
 var parent_satisfaction = 10;
 var social_connection = 0;
 
-var curr_result = "";
+var curr_result = "It's a new day! You are stressed out from homework yesterday night.<br/><br/>";
 
 $(document).ready(function() {
   // Config
@@ -52,7 +52,7 @@ $(document).ready(function() {
       message += "<br/><br/>You parents were ";
       if (parent_satisfaction > 90)
         message += "very satisfied with you. They believed that you can achieve in anything you like.";
-      else if (parent_satisfaction > 70)
+      else if (parent_satisfaction > 60)
         message += "satisfied with your performance. Now they are more willing to let you pursue your interests.";
       else
         message += "not happy about your performance. They are still restricting certain activities."
@@ -80,31 +80,41 @@ $(document).ready(function() {
   var state_ending = new State("ending",
   function() {
       clear_all();
-      update_params();
-      ClearByID("#week");
-      draw("#week", "<b>Week of <i>Gaokao</i></b>");
-      let message = "<h3></h3><br/><br/>";
+      ClearByID("#params");
+      draw("#week", "<b>After <i>Gaokao</i></b>");
+      let message = "<h2><b>";
+      if (grade > 75 && social_connection > 50)
+        message += "Work Hard, Play Hard"
+      else if (grade > 90)
+        message += "Honor of Your Family"
+      else if (grade > 75)
+        message += "A Rising Star"
+      else if (social_connection > 50)
+        message += "Cool Kid"
+      else
+        message += "The Transparent Kid"
+      message += "</b></h2><br/><br/>";
 
       if (grade > 90)
-        message += "You worked really hard and your score passed the <b>1st tier</b> in College Entrance Exam. So you get to attend your dream school.<br/><br/>";
-      if (grade > 75)
+        message += "You worked really hard and your score passed the <b>1st tier</b> in College Entrance Exam. So you get to attend your dream school.";
+      else if (grade > 75)
         message += "Your grade has improved drastically and you ended up passing the <b>2nd tier</b> in College Entrance Exam. You are admitted to a good local college in your town."
       else
         message += "Your didn't pass the College Entrance Exam. So you signed up for a local technical college."
       message += "<br/><br/>";
 
       if (parent_satisfaction > 90)
-        message += "Your parents are pround of you, and they will let you pursue your dream in university.";
+        message += "Your parents were pround of you, and they would let you pursue your dream in university.";
       else if (parent_satisfaction > 70)
-        message += "Your parents are quite satisfied at you, so they will let you pursue your dream in university.";
+        message += "Your parents were quite satisfied at you, so they would let you pursue your dream in university.";
       else
-        message += "Your parents are not satisfied by your performance and felt that you could be much better. You have no choice on what to major in college since they have already made the decision for you.";
+        message += "Your parents were not satisfied by your performance and felt that you could be much better. You have no choice on what to major in college since they have already made the decision for you.";
       message += "<br/><br/>";
 
       if (social_connection < 5)
         message += "Since you hardly have any social connections, you feel socially awkward in college. You also had a hard time seperating from your parent and becoming independent.";
       else if (social_connection < 50)
-        message += "Finally you move out of your parent's house to live in a dorm. You are glad that you finally have freedom over your social life and quickly made many friends in college.";
+        message += "You move out of your parent's house to live in a dorm. You are glad that you finally have freedom over your social life and you quickly made a lot of friends in college.";
       else
         message += "You college life was a blast! You became one of the most popular students in your college and everyone loves to hang out with you. Your social skills allowed you to become the president of student council in your college."
 
