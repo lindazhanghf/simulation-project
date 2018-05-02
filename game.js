@@ -81,25 +81,32 @@ $(document).ready(function() {
   function() {
       clear_all();
       update_params();
+      ClearByID("#week");
       draw("#week", "<b>Week of <i>Gaokao</i></b>");
-      let message = "It's the big day.<br/><br/>";
-      message += "You got " + grade + " in your Gaokao. ";
-      message += grade>=85?"Great job!" : (grade>=70? "Not bad!":"Work harder next time!");
-      message += "<br/><br/>You parents were ";
-      if (parent_satisfaction > 90)
-        message += "very satisfied with you. They believed that you can achieve in anything you like.";
-      else if (parent_satisfaction > 70)
-        message += "satisfied with your performance. Now they are more willing to let you pursue your interests.";
-      else
-        message += "not happy about your performance. They are still restricting certain activities."
+      let message = "<h3></h3><br/><br/>";
 
-      message += "<br/><br/>";
-      if (social_connection < 5)
-        message += "You spent the whole time studying too hard and missing out on social life. Your well being is at risk!";
-      else if (social_connection < 30)
-        message += "You social connection remained low. This makes you a bit depressed and could hurt your performance in <i>Gaokao</i>.";
+      if (grade > 90)
+        message += "You worked really hard and your score passed the <b>1st tier</b> in College Entrance Exam. So you get to attend your dream school.<br/><br/>";
+      if (grade > 75)
+        message += "Your grade has improved drastically and you ended up passing the <b>2nd tier</b> in College Entrance Exam. You are admitted to a good local college in your town."
       else
-        message += "You are enjoying your social life. Feeling optimistic about <i>Gaokao</i>!"
+        message += "Your didn't pass the College Entrance Exam. So you signed up for a local technical college."
+      message += "<br/><br/>";
+
+      if (parent_satisfaction > 90)
+        message += "Your parents are pround of you, and they will let you pursue your dream in university.";
+      else if (parent_satisfaction > 70)
+        message += "Your parents are quite satisfied at you, so they will let you pursue your dream in university.";
+      else
+        message += "Your parents are not satisfied by your performance and felt that you could be much better. You have no choice on what to major in college since they have already made the decision for you.";
+      message += "<br/><br/>";
+
+      if (social_connection < 5)
+        message += "Since you hardly have any social connections, you feel socially awkward in college. You also had a hard time seperating from your parent and becoming independent.";
+      else if (social_connection < 50)
+        message += "Finally you move out of your parent's house to live in a dorm. You are glad that you finally have freedom over your social life and quickly made many friends in college.";
+      else
+        message += "You college life was a blast! You became one of the most popular students in your college and everyone loves to hang out with you. Your social skills allowed you to become the president of student council in your college."
 
       draw_message(message);
   });
@@ -191,7 +198,7 @@ function draw_option(id, option) {
   console.log("Draw option: "+option.button_text);
   var output = `<div class="card text-center" style="height: 20rem;">`
   if (option.image_path) {
-    output += `<img class="card-img-top" src="`+option.image_path+`" alt="Morning Reading Photo" style="height: 12rem;">`;
+    output += `<img class="card-img-top image-flexible" src="`+option.image_path+`" alt="Morning Reading Photo" style="height: 12rem;">`;
   }
   output += `
       <div class="card-body">
